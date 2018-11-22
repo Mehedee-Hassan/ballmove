@@ -253,13 +253,13 @@ public class FloatingViewService extends Service implements SensorEventListener 
                     Log.d("sensor", "shake detected w/ speed: " + speed);
                     Toast.makeText(this, "shake detected w/ speed:SERVICE " + speed, Toast.LENGTH_SHORT).show();
 
-                    params.x = 0;
-                    params.y = 400;
-
-
-                    //Update the layout with new X & Y coordinate
-                    mWindowManager.updateViewLayout(mFloatingView, params);
-
+//                    params.x = 0;
+//                    params.y = 400;
+//
+//
+//                    //Update the layout with new X & Y coordinate
+//                    mWindowManager.updateViewLayout(mFloatingView, params);
+//
 
 
                 }
@@ -276,7 +276,10 @@ public class FloatingViewService extends Service implements SensorEventListener 
     }
 
     Random random = new Random();
-    int nextFlag = 100;
+    int nextFlag = 10;
+    int trueif= 0;
+    float ox=0,oy=0;
+
     private void breceiver(){
         floatingBallReceiver = new BroadcastReceiver() { // init your Receiver
 
@@ -284,13 +287,26 @@ public class FloatingViewService extends Service implements SensorEventListener 
             public void onReceive(Context context, Intent intent) {
 
                 Log.d("Apps", "I'm in the onReceive");
-                
-                for(int i = 0 ; i <nextFlag ; i++ ) {
-                    params.x = (int) (intent.getFloatExtra("X", 0f) + i)* 10;
-                    params.y = (int) (intent.getFloatExtra("Y", 0f) + i)* 10;
+                float x  = intent.getFloatExtra("X", 0f);
+                float y = intent.getFloatExtra("Y", 0f);
+                if(true) {
+                    for (int i = 1; i < nextFlag; i++)
+                    {
+
+                        if(ox > x) {
+                            params.x += (int) (x) + i;
+                            params.y += (int) (y) + i;
+                        }else{
+
+                        }
+                        Log.d("pos", "onReceive: "+params.x+" "+params.y);
+                        mWindowManager.updateViewLayout(mFloatingView, params);
+                    }
                 }
+                ox = x;
+                oy = y;
+
                //Update the layout with new X & Y coordinate
-                mWindowManager.updateViewLayout(mFloatingView, params);
 
             }
         };

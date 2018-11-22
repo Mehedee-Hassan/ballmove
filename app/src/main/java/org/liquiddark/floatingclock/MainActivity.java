@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (event.sensor.getStringType() == Sensor.STRING_TYPE_ACCELEROMETER) {
             long curTime = System.currentTimeMillis();
             // only allow one update every 100ms.
-            if ((curTime - lastUpdate) > 10) {
+            if ((curTime - lastUpdate) > 100) {
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
 
@@ -113,11 +113,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     startService(new Intent(MainActivity.this, FloatingViewService.class));
                     this.finish();
 
-                    Intent intent = new Intent("org.liquiddark.MOVING");
-                    intent.putExtra("X",x);
-                    intent.putExtra("Y",y);
-                    sendBroadcast(intent);
+
                 }
+
+                Intent intent = new Intent("org.liquiddark.MOVING");
+                intent.putExtra("X",x);
+                intent.putExtra("Y",y);
+                sendBroadcast(intent);
+
                 last_x = x;
                 last_y = y;
                 last_z = z;
